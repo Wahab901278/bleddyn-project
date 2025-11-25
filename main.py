@@ -44,5 +44,16 @@ print("Data Cleaning Done!")
 print("Number of numerical columns",len(numerical_columns))
 
 
+new_de=DataExploration(df)
+numerical_columns,categorical_columns=new_de.types_of_columns()
 dv=DataVisualization(df)
 figure1,figure2=dv.visualize_distributions_of_numerical_columns(numerical_columns)
+heatmap_fig=dv.heatmap(numerical_columns)
+
+df.drop(columns=['order_id','customer_id','product_id'],inplace=True)
+columns_with_least_categories=[]
+for col in df.columns:
+    value_counts=df[col].value_counts()
+    if len(value_counts.index)<10:
+        columns_with_least_categories.append(col)
+df=df[columns_with_least_categories]
